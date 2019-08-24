@@ -19,11 +19,15 @@ names = sheet.get_all_records()
 winners = random.choices(names, k=2)
 #print(winners)
 
-#Create a payload to post to slack, iterate over winners dictionary and append to the list winnersPayload
-winnersPayload = 'The winners are....'
-for dic in winners:
-    for key in dic:        
-        winnersPayload = winnersPayload + dic[key] + ' and ' 
+#Error handling for cases where the same name chosen twice.
+#Create a payload -winnersPayload- to post to slack, iterate over winners dictionary and append to the list winnersPayload
+if winners[1:1] == winners[1:2]:
+    winners = random.choices(names, k=2)
+else:
+    winnersPayload = 'The winners are....'
+    for dic in winners:
+        for key in dic:        
+            winnersPayload = winnersPayload + dic[key] + ' and ' 
 
 #Slicing winners payload to remove unwanted characters.
 winnersPayload = winnersPayload[:-4]
@@ -36,3 +40,7 @@ slackUrl = "https://hooks.slack.com/services/T02B5E4A2/BMG61K9AB/yurk4tzKJbk4BVk
 #Populate payload with above variables
 payload={"channel": channel, "username": userName, 'text': winnersPayload, "icon_emoji": iconEmoji}
 slackPost = requests.post(slackUrl, json = payload)
+
+
+
+
