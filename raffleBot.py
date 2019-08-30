@@ -33,14 +33,14 @@ else:
 winnersPayload = winnersPayload[:-4]
         
 #Build post request for slack
-channel = "@mattsies"
 userName = "raffleBot"
 iconEmoji = ":hotdog:"
-slackUrl = "https://hooks.slack.com/services/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"
+#@saumets channel below
+slackUrl = "https://hooks.slack.com/services/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"
+#@mattsies channel below
+#slackUrl = "https://hooks.slack.com/services/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"
+#Mobility slack channel below
+#slackUrl ="https://hooks.slack.com/services/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"
 #Populate payload with above variables
-payload={"channel": channel, "username": userName, 'text': winnersPayload, "icon_emoji": iconEmoji}
+payload={"username": userName, 'text': winnersPayload, "icon_emoji": iconEmoji}
 slackPost = requests.post(slackUrl, json = payload)
-
-
-
-
