@@ -1,3 +1,4 @@
+import sys
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import random
@@ -15,23 +16,16 @@ sheet = client.open('Mobility Raffle Bot').sheet1
 names = sheet.get_all_records()
 #print(names)
 
-#Creating a winners object and using random.choices function to pull 2 names
-winners = random.choices(names, k=2)
-#print(winners)
+#Creating a winners object and using random.sample function to pull X unique entries (names)
+winners = random.sample(names, int(sys.argv[1]))
 
-#Error handling for cases where the same name chosen twice.
 #Create a payload -winnersPayload- to post to slack, iterate over winners dictionary and append to the list winnersPayload
-if winners[1:1] == winners[1:2]:
-    winners = random.choices(names, k=2)
-else:
-    winnersPayload = 'The winners are....'
-    for dic in winners:
-        for key in dic:        
-            winnersPayload = winnersPayload + dic[key] + ' and ' 
+winnersPayload = 'The Mobility Rafflebot winners are...\n'
 
-#Slicing winners payload to remove unwanted characters.
-winnersPayload = winnersPayload[:-4]
-        
+for dic in winners:
+  for key in dic:
+    winnersPayload = winnersPayload + dic[key] + '\n'
+
 #Build post request for slack
 userName = "raffleBot"
 iconEmoji = ":hotdog:"
